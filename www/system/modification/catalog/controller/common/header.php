@@ -21,10 +21,10 @@ class ControllerCommonHeader extends Controller {
 		$data['name'] = $this->config->get('config_name');
 
 			$data['theme_path'] = $this->config->get('config_template');
-			
- 
+
+
 			$data['maintenance'] = $this->config->get('config_maintenance');
-			
+
 
 		if (is_file(DIR_IMAGE . $this->config->get('config_icon'))) {
 			$data['icon'] = $server . 'image/' . $this->config->get('config_icon');
@@ -38,7 +38,7 @@ class ControllerCommonHeader extends Controller {
 			$data['logo'] = '';
 		}
 
- 
+
 			if (($data['maintenance']==0)) {
 			$data['informations'] = array();
 			foreach ($this->model_catalog_information->getInformations() as $result) {
@@ -48,9 +48,9 @@ class ControllerCommonHeader extends Controller {
 						'href'  => $this->url->link('information/information', 'information_id=' . $result['information_id'])
 					);
 				}
-			}	
+			}
 		}
-			
+
 		$this->load->language('common/header');
 
 		$data['text_home'] = $this->language->get('text_home');
@@ -67,8 +67,8 @@ class ControllerCommonHeader extends Controller {
 		$data['text_logout'] = $this->language->get('text_logout');
 		$data['text_checkout'] = $this->language->get('text_checkout');
 		$data['text_category'] = $this->language->get('text_category');
- 
-			
+
+
 			$data['text_shopcart'] = $this->language->get('text_shopcart');
 			$data['text_information'] = $this->language->get('text_information');
 			$data['text_service'] = $this->language->get('text_service');
@@ -85,8 +85,8 @@ class ControllerCommonHeader extends Controller {
 			$data['text_order'] = $this->language->get('text_order');
 			$data['text_newsletter'] = $this->language->get('text_newsletter');
 			$data['text_category'] = $this->language->get('text_category');
-			
-			
+
+
 		$data['text_all'] = $this->language->get('text_all');
 
 		$data['home'] = $this->url->link('common/home');
@@ -103,7 +103,7 @@ class ControllerCommonHeader extends Controller {
 		$data['checkout'] = $this->url->link('checkout/checkout', '', 'SSL');
 		$data['contact'] = $this->url->link('information/contact');
 		$data['telephone'] = $this->config->get('config_telephone');
- 
+
 			$data['sitemap'] = $this->url->link('information/sitemap');
 			$data['special'] = $this->url->link('product/special');
 			$data['contact'] = $this->url->link('information/contact');
@@ -115,8 +115,8 @@ class ControllerCommonHeader extends Controller {
 			$data['affiliate'] = $this->url->link('affiliate/account', '', 'SSL');
 			$data['account'] = $this->url->link('account/account', '', 'SSL');
 			$data['order'] = $this->url->link('account/order', '', 'SSL');
-			$data['newsletter'] = $this->url->link('account/newsletter', '', 'SSL');		
-			
+			$data['newsletter'] = $this->url->link('account/newsletter', '', 'SSL');
+
 
 		$status = true;
 
@@ -139,7 +139,7 @@ class ControllerCommonHeader extends Controller {
 
 		$data['categories'] = array();
 
-		$categories = $this->model_catalog_category->getCategories(0);
+		$categories = array(); //$this->model_catalog_category->getCategories(0);
 
 		foreach ($categories as $category) {
 			if ($category['top']) {
@@ -173,7 +173,7 @@ class ControllerCommonHeader extends Controller {
 
 			$this->load->model('design/topmenu');
 			$data['categories_tm'] = $this->model_design_topmenu->getMenu();
-			
+
 		$data['language'] = $this->load->controller('common/language');
 		$data['currency'] = $this->load->controller('common/currency');
 		$data['search'] = $this->load->controller('common/search');
