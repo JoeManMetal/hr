@@ -248,9 +248,21 @@ $controller->addPreAction(new Action('common/maintenance'));
 // SEO URL's
 $controller->addPreAction(new Action('common/seo_url'));
 
+$allowed_route = array(
+	'account/login',
+	'account/logout',
+	'account/account',
+	'account/edit',
+	'account/address',
+	'common/home'
+);
 // Router
 if (isset($request->get['route'])) {
-	$action = new Action($request->get['route']);
+	if(in_array($request->get['route'], $allowed_route))
+		$action = new Action($request->get['route']);
+	else {
+		$action = new Action('error/not_found');
+	}
 } else {
 	$action = new Action('common/home');
 }

@@ -158,6 +158,19 @@ class ControllerAccountAddress extends Controller {
 		$this->getList();
 	}
 
+	protected function find_custom_field_name($array, $key, $value) {
+	    $results = array();
+	    if (is_array($array)) {
+	        if (isset($array[$key]) && $array[$key] == $value) {
+	            $results[] = $array;
+	        }
+	        foreach ($array as $subarray) {
+	            $results = array_merge($results, $this->find_custom_field_name($subarray, $key, $value));
+	        }
+	    }
+	    return $results;
+	}
+
 	protected function getList() {
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
@@ -200,9 +213,12 @@ class ControllerAccountAddress extends Controller {
 
 		$data['addresses'] = array();
 
-		$results = $this->model_account_address->getAddresses();
+		$this->load->model('account/custom_field');
+		$data['custom_fields'] = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
 
+		$results = $this->model_account_address->getAddresses();
 		foreach ($results as $result) {
+
 			if ($result['address_format']) {
 				$format = $result['address_format'];
 			} else {
@@ -235,13 +251,30 @@ class ControllerAccountAddress extends Controller {
 				'country'   => $result['country']
 			);
 
+
+			$leave_record = array();
+			if ($result['custom_field']) {
+				foreach ($result['custom_field'] as $custom_field_id => $custom_field) {
+					$custom_field_array = $this->find_custom_field_name($data['custom_fields'], 'custom_field_id', $custom_field_id );
+
+					$leave_record[] = array(
+						'name' => $custom_field_array[0]['name'],
+						'value' => $custom_field
+					);
+				}
+			}
+
 			$data['addresses'][] = array(
 				'address_id' => $result['address_id'],
 				'address'    => str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format)))),
 				'update'     => $this->url->link('account/address/edit', 'address_id=' . $result['address_id'], 'SSL'),
-				'delete'     => $this->url->link('account/address/delete', 'address_id=' . $result['address_id'], 'SSL')
+				'delete'     => $this->url->link('account/address/delete', 'address_id=' . $result['address_id'], 'SSL'),
+				'custom_field' => $leave_record //$result['custom_field']
 			);
 		}
+
+		//var_dump($data['custom_fields']); die;
+		//var_dump($data['addresses']); die;
 
 		$data['add'] = $this->url->link('account/address/add', '', 'SSL');
 		$data['back'] = $this->url->link('account/account', '', 'SSL');
@@ -361,7 +394,7 @@ class ControllerAccountAddress extends Controller {
 		} else {
 			$data['error_custom_field'] = array();
 		}
-		
+
 		if (!isset($this->request->get['address_id'])) {
 			$data['action'] = $this->url->link('account/address/add', '', 'SSL');
 		} else {
