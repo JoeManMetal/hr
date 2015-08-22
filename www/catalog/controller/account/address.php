@@ -252,6 +252,8 @@ class ControllerAccountAddress extends Controller {
 			);
 
 
+			ksort($result['custom_field']);
+			
 			$leave_record = array();
 			if ($result['custom_field']) {
 				foreach ($result['custom_field'] as $custom_field_id => $custom_field) {

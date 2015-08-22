@@ -1,11 +1,16 @@
 <?php
 // HTTP
+if('127.0.0.1' == $_SERVER["REMOTE_ADDR"]){
 define('HTTP_SERVER', 'http://hr.local/');
-
 // HTTPS
 define('HTTPS_SERVER', 'http://hr.local/');
+} else {
+    define('HTTP_SERVER', 'http://coder.vizzhost.com/leave_record/');
+    // HTTPS
+    define('HTTPS_SERVER', 'http://coder.vizzhost.com/leave_record/');
+}
 
-define('FILE_PATH', 'F:\www\HR\www/');
+define('FILE_PATH', __DIR__ . '/');
 
 // DIR
 define('DIR_APPLICATION', FILE_PATH . 'catalog/');
@@ -20,6 +25,7 @@ define('DIR_UPLOAD', FILE_PATH . 'system/upload/');
 define('DIR_MODIFICATION', FILE_PATH . 'system/modification/');
 define('DIR_LOGS', FILE_PATH . 'system/logs/');
 
+if('127.0.0.1' == $_SERVER["REMOTE_ADDR"]){
 // DB
 define('DB_DRIVER', 'mysqli');
 define('DB_HOSTNAME', 'localhost');
@@ -27,3 +33,11 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
 define('DB_DATABASE', 'leave_record');
 define('DB_PREFIX', 'oc_');
+} else {
+    define('DB_DRIVER', 'mysqli');
+    define('DB_HOSTNAME', 'localhost');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', 'hell0w0rld');
+    define('DB_DATABASE', 'leave_record');
+    define('DB_PREFIX', 'oc_');
+}
