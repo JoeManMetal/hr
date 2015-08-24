@@ -216,6 +216,8 @@ class ControllerAccountAddress extends Controller {
 		$this->load->model('account/custom_field');
 		$data['custom_fields'] = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
 
+		$current_year = date('Y');
+
 		$results = $this->model_account_address->getAddresses();
 		foreach ($results as $result) {
 
@@ -255,24 +257,60 @@ class ControllerAccountAddress extends Controller {
 			ksort($result['custom_field']);
 
 			$leave_record = array();
+			$data['leave_entitlement'] = array();
+			$data['leave_carryover'] = array();
+			$total_al = 0;
+			$total_taken = 0;
+
 			if ($result['custom_field']) {
 				foreach ($result['custom_field'] as $custom_field_id => $custom_field) {
 					$custom_field_array = $this->find_custom_field_name($data['custom_fields'], 'custom_field_id', $custom_field_id );
 
-					$leave_record[] = array(
-						'name' => $custom_field_array[0]['name'],
-						'value' => $custom_field
-					);
+					if( $custom_field_id == 5) {
+						$data['leave_entitlement'] = array(
+							'name' => $custom_field_array[0]['name'],
+							'value' => $custom_field
+						);
+						$total_al += (float)$custom_field;
+					} else if ($custom_field_id == 4) {
+						$data['leave_carryover'] = array(
+							'name' => $custom_field_array[0]['name'],
+							'value' => $custom_field
+						);
+						$total_al += (float)$custom_field;
+					} else {
+						$leave_record[] = array(
+							'name' => $custom_field_array[0]['name'],
+							'value' => $custom_field
+						);
+
+						$total_taken += (float)$custom_field;
+					}
 				}
 			}
+
+			$data['total_al'] = $total_al;
+
+			$datetime1 = new DateTime($current_year.'-01-01');
+			$datetime2 = new DateTime(date('Y-m-d'));
+			$interval = $datetime1->diff($datetime2);
+
+			$data['total_al_as_at_today'] = number_format($data['leave_entitlement']['value'] * $interval->days / 365, 2) + $data['leave_carryover']['value'];
+
+			$data['total_al_left_as_at_yearend'] = $total_al - $total_taken;
+			$data['total_al_left_as_at_today'] = $data['total_al_as_at_today'] - $total_taken;
+			$data['total_taken'] = $total_taken;
 
 			$data['addresses'][] = array(
 				'address_id' => $result['address_id'],
 				'address'    => str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format)))),
 				'update'     => $this->url->link('account/address/edit', 'address_id=' . $result['address_id'], 'SSL'),
 				'delete'     => $this->url->link('account/address/delete', 'address_id=' . $result['address_id'], 'SSL'),
-				'custom_field' => $leave_record //$result['custom_field']
+				'custom_field' => $leave_record, //$result['custom_field']
+				'year' => $current_year
 			);
+
+			$current_year--;
 		}
 
 		//var_dump($data['custom_fields']); die;
