@@ -534,6 +534,7 @@ div.required .control-label:before {
   .header .logo {
     float: left;
     margin: 6px 0 10px; }
+.logo a {color: #fff;}
   .header .search {
     float: right; }
   .header .button-account .toggle_cont,

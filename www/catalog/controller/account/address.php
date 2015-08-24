@@ -183,7 +183,7 @@ class ControllerAccountAddress extends Controller {
 		);
 
 		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('heading_title'),
+			'text' => 'LEAVE RECORD', //$this->language->get('heading_title'),
 			'href' => $this->url->link('account/address', '', 'SSL')
 		);
 
@@ -253,7 +253,7 @@ class ControllerAccountAddress extends Controller {
 
 
 			ksort($result['custom_field']);
-			
+
 			$leave_record = array();
 			if ($result['custom_field']) {
 				foreach ($result['custom_field'] as $custom_field_id => $custom_field) {
