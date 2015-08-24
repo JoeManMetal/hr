@@ -22,27 +22,65 @@
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
         <h2><?php //echo $text_address_book; ?></h2>
         <?php if ($addresses) { ?>
-
-          <?php
-            $current_year = date('Y');
-            for($i = $current_year; $i >= 2015; $i-- ) {
-                $year_array[] = $i;
-            }
-            $y = 0;
-          ?>
           <?php foreach ($addresses as $result) { ?>
             <table class="table table-bordered table-hover">
-            <tr>
-              <th class="text-left" colspan="2"><?php echo $year_array[$y] ?></td>
-            </tr>
-            <?php foreach ($result['custom_field'] as $custom_field) { ?>
                 <tr>
-                  <td class="text-left"><?php echo $custom_field['name']; ?></td>
-                  <td class="text-right"><?php echo $custom_field['value']; ?></td>
+                  <th class="text-left" colspan="2"><?php echo $result['year'] ?></td>
                 </tr>
-            <?php } ?>
+                <tr>
+                  <td class="text-left"><?php echo $leave_carryover['name']; ?></td>
+                  <td class="text-right"><?php echo $leave_carryover['value']; ?></td>
+                </tr>
+                <tr>
+                  <td class="text-left"><?php echo $leave_entitlement['name']; ?></td>
+                  <td class="text-right"><?php echo $leave_entitlement['value']; ?></td>
+                </tr>
+                <tr>
+                  <td class="text-left">2015 Total AL available 2015-12-31</td>
+                  <td class="text-right"><?php echo $total_al; ?></td>
+                </tr>
+                <tr>
+                  <td class="text-left">Total Days Left as at 2015-12-31</td>
+                  <td class="text-right"><?php echo $total_al_left_as_at_yearend; ?></td>
+                </tr>
+                <tr>
+                  <td class="text-left">2015 AL available as at today</td>
+                  <td class="text-right"><?php echo $total_al_as_at_today; ?></td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">Total Days Left as at today</td>
+                  <td class="text-right"><?php echo $total_al_left_as_at_today; ?></td>
+                </tr>
+                <tr>
+                  <td class="text-left">Total Taken in 2015</td>
+                  <td class="text-right"><?php echo $total_taken; ?></td>
+                </tr>
             </table>
-        <?php $y++; } ?>
+            <?php foreach ($addresses as $result) { ?>
+                <div class="row">
+
+                <?php $m = 0; foreach ($result['custom_field'] as $custom_field) { ?>
+                    <?php if ($m % 4 == 0) { ?>
+                        <div class="col-md-4">
+                    <?php } ?>
+
+                        <div style="float: left; width: 25%; text-align: center;"><div style="padding: 8px; "><?php echo $custom_field['name']; ?></div><div style="padding: 8px; border-top: 1px solid #cdcdcd;"><?php echo $custom_field['value']; ?></div></div>
+
+                    <?php $m++; if ($m % 4 == 0) { ?>
+                        <div style="clear:left;"></div>
+                        </div>
+                    <?php } ?>
+
+                <?php }  ?>
+
+                </div>
+
+
+
+            <?php } ?>
+
+        <?php } ?>
 
       <?php } else { ?>
       <p><?php echo $text_empty; ?></p>
