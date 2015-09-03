@@ -10,13 +10,12 @@ class ModelAccountProject extends Model {
     }
 
     public function getProjects() {
-        $project_data = array();
+        
 
         $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "project");
 
-        foreach ($query->rows as $result) {
+        return $query->rows;
 
-        }
     }
 
 }

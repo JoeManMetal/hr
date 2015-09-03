@@ -13,6 +13,9 @@ if (!defined('DIR_APPLICATION')) {
 	exit;
 }
 
+//vendor
+require __DIR__.'/vendor/autoload.php';
+
 // Startup
 require_once(DIR_SYSTEM . 'startup.php');
 

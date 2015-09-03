@@ -101,6 +101,7 @@ class ControllerAccountProject extends Controller {
 
 
         $results = $this->model_account_project->getProjects();
+        dump($results);
 		foreach ($results as $result) {
 
 
