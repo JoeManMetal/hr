@@ -21,7 +21,8 @@
       <ul class="list-unstyled">
         <li><a href="<?php echo $edit; ?>">Information<?php //echo $text_edit; ?></a></li>
         <li><a href="<?php echo $address; ?>">Leave Record<?php //echo $text_address; ?></a></li>
-
+        <li><a href="<?php echo $password; ?>"><?php echo $text_password; ?></a></li>
+        <li><a href="<?php echo $project; ?>"><?php echo $text_project; ?></a></li>
       </ul>
 
       <?php echo $content_bottom; ?></div>

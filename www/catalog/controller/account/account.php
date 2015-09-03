@@ -38,6 +38,7 @@ class ControllerAccountAccount extends Controller {
 		$data['text_my_newsletter'] = $this->language->get('text_my_newsletter');
 		$data['text_edit'] = $this->language->get('text_edit');
 		$data['text_password'] = $this->language->get('text_password');
+		$data['text_project'] = $this->language->get('text_project');
 		$data['text_address'] = $this->language->get('text_address');
 		$data['text_wishlist'] = $this->language->get('text_wishlist');
 		$data['text_order'] = $this->language->get('text_order');
@@ -50,6 +51,7 @@ class ControllerAccountAccount extends Controller {
 
 		$data['edit'] = $this->url->link('account/edit', '', 'SSL');
 		$data['password'] = $this->url->link('account/password', '', 'SSL');
+		$data['project'] = $this->url->link('account/project', '', 'SSL');
 		$data['address'] = $this->url->link('account/address', '', 'SSL');
 		$data['wishlist'] = $this->url->link('account/wishlist');
 		$data['order'] = $this->url->link('account/order', '', 'SSL');

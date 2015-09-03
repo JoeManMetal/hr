@@ -252,8 +252,10 @@ $allowed_route = array(
 	'account/login',
 	'account/logout',
 	'account/account',
+	'account/password',
 	'account/edit',
 	'account/address',
+	'account/project',
 	'common/home'
 );
 // Router
