@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f15bd48ff59ebbbc4060e64cd61a6bf1",
+    "hash": "636ce9e5defca05749f5da0fb7a5374d",
     "packages": [
         {
             "name": "symfony/var-dumper",

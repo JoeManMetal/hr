@@ -22,6 +22,11 @@
         <?php } ?>
     </div>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
+        <?php if ($projects) { ?>
+
+        <?php } else { ?>
+        <p><?php echo $text_empty; ?></p>
+        <?php } ?>
 
         <div class="buttons clearfix">
           <div class="pull-left"><a href="<?php echo $back; ?>" class="btn btn-default"><?php echo $button_back; ?></a></div>

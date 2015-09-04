@@ -259,6 +259,7 @@ $allowed_route = array(
 	'account/edit',
 	'account/address',
 	'account/project',
+	'account/project/add',
 	'common/home'
 );
 // Router
