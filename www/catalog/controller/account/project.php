@@ -98,6 +98,7 @@ class ControllerAccountProject extends Controller {
         $data['entry_project_type'] = $this->language->get('entry_project_type');
         $data['entry_project_source'] = $this->language->get('entry_project_source');
         $data['entry_project_amount'] = $this->language->get('entry_project_amount');
+        $data['entry_project_'] = $this->language->get('entry_project_amount');
 
 
         if (isset($this->error['project_name'])) {
