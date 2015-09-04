@@ -1,0 +1,17 @@
+Project Workload
+
+Year
+Week
+PIC
+Project Name
+Project Type
+Project Source/Referral
+Contract Amount
+Balance
+Existing Stage
+Weekly Total Effort
+Accumlative Total Effort
+Remarks
+
+change password
+
