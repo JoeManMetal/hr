@@ -95,6 +95,9 @@ class ControllerAccountProject extends Controller {
 		$data['button_back'] = $this->language->get('button_back');
 
         $data['entry_project_name'] = $this->language->get('entry_project_name');
+        $data['entry_project_type'] = $this->language->get('entry_project_type');
+        $data['entry_project_source'] = $this->language->get('entry_project_source');
+        $data['entry_project_amount'] = $this->language->get('entry_project_amount');
 
 
         if (isset($this->error['project_name'])) {
@@ -103,13 +106,57 @@ class ControllerAccountProject extends Controller {
 			$data['error_project_name'] = '';
 		}
 
-
         if (isset($this->request->post['project_name'])) {
 			$data['project_name'] = $this->request->post['project_name'];
 		} elseif (!empty($address_info)) {
 			$data['project_name'] = $address_info['project_name'];
 		} else {
 			$data['project_name'] = '';
+		}
+
+
+        if (isset($this->error['project_type'])) {
+			$data['error_project_type'] = $this->error['project_type'];
+		} else {
+			$data['error_project_type'] = '';
+		}
+
+        if (isset($this->request->post['project_type'])) {
+			$data['project_type'] = $this->request->post['project_type'];
+		} elseif (!empty($address_info)) {
+			$data['project_type'] = $address_info['project_type'];
+		} else {
+			$data['project_type'] = '';
+		}
+
+
+        if (isset($this->error['project_source'])) {
+			$data['error_project_source'] = $this->error['project_source'];
+		} else {
+			$data['error_project_source'] = '';
+		}
+
+        if (isset($this->request->post['project_source'])) {
+			$data['project_source'] = $this->request->post['project_source'];
+		} elseif (!empty($address_info)) {
+			$data['project_source'] = $address_info['project_source'];
+		} else {
+			$data['project_source'] = '';
+		}
+
+
+        if (isset($this->error['project_amount'])) {
+			$data['error_project_amount'] = $this->error['project_amount'];
+		} else {
+			$data['error_project_amount'] = '';
+		}
+
+        if (isset($this->request->post['project_amount'])) {
+			$data['project_amount'] = $this->request->post['project_amount'];
+		} elseif (!empty($address_info)) {
+			$data['project_amount'] = $address_info['project_amount'];
+		} else {
+			$data['project_amount'] = '';
 		}
 
 
