@@ -38,7 +38,7 @@ class ControllerAccountProject extends Controller {
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_account_project->addProject($this->request->post);
-
+die;
 			$this->session->data['success'] = $this->language->get('text_add');
 
 			// Add to activity log
@@ -95,6 +95,7 @@ class ControllerAccountProject extends Controller {
 		$data['button_back'] = $this->language->get('button_back');
 
         $data['entry_project_name'] = $this->language->get('entry_project_name');
+        $data['entry_description'] = $this->language->get('entry_description');
         $data['entry_project_type'] = $this->language->get('entry_project_type');
         $data['entry_project_source'] = $this->language->get('entry_project_source');
         $data['entry_project_amount'] = $this->language->get('entry_project_amount');
@@ -158,6 +159,13 @@ class ControllerAccountProject extends Controller {
 			$data['project_amount'] = $address_info['project_amount'];
 		} else {
 			$data['project_amount'] = '';
+		}
+
+
+        if (!isset($this->request->get['project_id'])) {
+			$data['action'] = $this->url->link('account/project/add', '', 'SSL');
+		} else {
+			$data['action'] = $this->url->link('account/project/edit', 'project_id=' . $this->request->get['project_id'], 'SSL');
 		}
 
 
@@ -247,7 +255,7 @@ class ControllerAccountProject extends Controller {
 
 
         $results = $this->model_account_project->getProjects();
-        dump($results);
+        //dump($results);
 		foreach ($results as $result) {
 
 

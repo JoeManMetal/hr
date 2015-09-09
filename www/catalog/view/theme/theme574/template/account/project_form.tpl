@@ -18,6 +18,9 @@
         <h2><?php echo $text_project; ?></h2>
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
           <fieldset>
+
+
+
             <div class="form-group required">
               <label class="col-sm-2 control-label" for="input-project_name"><?php echo $entry_project_name; ?></label>
               <div class="col-sm-10">
@@ -27,6 +30,16 @@
                 <?php } ?>
               </div>
             </div>
+
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-description<?php echo $language['language_id']; ?>"><?php echo $entry_description; ?></label>
+              <div class="col-sm-10">
+                <textarea name="project_description[<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" id="input-description<?php echo $language['language_id']; ?>"><?php echo isset($project_description[$language['language_id']]) ? $project_description[$language['language_id']]['description'] : ''; ?></textarea>
+              </div>
+            </div>
+
+
             <div class="form-group required">
               <label class="col-sm-2 control-label" for="input-project_type"><?php echo $entry_project_type; ?></label>
               <div class="col-sm-10">
