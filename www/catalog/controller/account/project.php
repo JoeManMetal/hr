@@ -102,6 +102,10 @@ die;
         $data['entry_project_'] = $this->language->get('entry_project_amount');
 
 
+        $this->load->model('localisation/language');
+        $data['languages'] = $this->model_localisation_language->getLanguages();
+
+
         if (isset($this->error['project_name'])) {
 			$data['error_project_name'] = $this->error['project_name'];
 		} else {

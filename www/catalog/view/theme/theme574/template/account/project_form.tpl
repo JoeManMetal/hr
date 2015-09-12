@@ -17,27 +17,28 @@
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
         <h2><?php echo $text_project; ?></h2>
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
-          <fieldset>
+            <fieldset>
 
 
+            <?php foreach ($languages as $language) { ?>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-project_name"><?php echo $entry_project_name; ?></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="project_name" value="<?php echo $project_name; ?>" placeholder="<?php echo $entry_project_name; ?>" id="input-project_name" class="form-control" />
+                    <?php if ($error_project_name) { ?>
+                    <div class="text-danger"><?php echo $error_project_name; ?></div>
+                    <?php } ?>
+                  </div>
+                </div>
 
-            <div class="form-group required">
-              <label class="col-sm-2 control-label" for="input-project_name"><?php echo $entry_project_name; ?></label>
-              <div class="col-sm-10">
-                <input type="text" name="project_name" value="<?php echo $project_name; ?>" placeholder="<?php echo $entry_project_name; ?>" id="input-project_name" class="form-control" />
-                <?php if ($error_project_name) { ?>
-                <div class="text-danger"><?php echo $error_project_name; ?></div>
-                <?php } ?>
-              </div>
-            </div>
 
-
-            <div class="form-group">
-              <label class="col-sm-2 control-label" for="input-description<?php echo $language['language_id']; ?>"><?php echo $entry_description; ?></label>
-              <div class="col-sm-10">
-                <textarea name="project_description[<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" id="input-description<?php echo $language['language_id']; ?>"><?php echo isset($project_description[$language['language_id']]) ? $project_description[$language['language_id']]['description'] : ''; ?></textarea>
-              </div>
-            </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-description<?php echo $language['language_id']; ?>"><?php echo $entry_description; ?></label>
+                  <div class="col-sm-10">
+                    <textarea name="project_description[<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" id="input-description<?php echo $language['language_id']; ?>"><?php echo isset($project_description[$language['language_id']]) ? $project_description[$language['language_id']]['description'] : ''; ?></textarea>
+                  </div>
+                </div>
+            <?php } ?>
 
 
             <div class="form-group required">
@@ -49,6 +50,7 @@
                 <?php } ?>
               </div>
             </div>
+
             <div class="form-group required">
               <label class="col-sm-2 control-label" for="input-project_source"><?php echo $entry_project_source; ?></label>
               <div class="col-sm-10">
