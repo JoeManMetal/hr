@@ -37,8 +37,9 @@ class ControllerAccountProject extends Controller {
         $this->load->model('account/project');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+
 			$this->model_account_project->addProject($this->request->post);
-die;
+
 			$this->session->data['success'] = $this->language->get('text_add');
 
 			// Add to activity log
@@ -99,7 +100,7 @@ die;
         $data['entry_project_type'] = $this->language->get('entry_project_type');
         $data['entry_project_source'] = $this->language->get('entry_project_source');
         $data['entry_project_amount'] = $this->language->get('entry_project_amount');
-        $data['entry_project_'] = $this->language->get('entry_project_amount');
+        $data['entry_project_remark'] = $this->language->get('entry_project_remark');
 
 
         $this->load->model('localisation/language');
@@ -193,6 +194,24 @@ die;
 
     protected function validateForm() {
 
+        foreach ($this->request->post['project_description'] as $language_id => $value) {
+			if ((utf8_strlen($value['name']) < 2) || (utf8_strlen($value['name']) > 255)) {
+				$this->error['project_name'][$language_id] = $this->language->get('error_project_name');
+			}
+
+			if ((utf8_strlen($value['project_type']) < 3) || (utf8_strlen($value['project_type']) > 255)) {
+				$this->error['project_type'][$language_id] = $this->language->get('error_project_type');
+			}
+
+            if ((utf8_strlen($value['project_source']) < 3) || (utf8_strlen($value['project_source']) > 255)) {
+				$this->error['project_source'][$language_id] = $this->language->get('error_project_source');
+			}
+		}
+
+        if( empty($value['project_amount']) || ($value['project_amount'] <= 0 ) ) {
+            $this->error['project_amount'] = $this->language->get('error_project_amount');
+        }
+
         return !$this->error;
     }
 
@@ -216,6 +235,41 @@ die;
     }
 
     protected function getList() {
+
+        $this->load->language('account/project');
+
+        if (isset($this->request->get['sort'])) {
+			$sort = $this->request->get['sort'];
+		} else {
+			$sort = 'name';
+		}
+
+		if (isset($this->request->get['order'])) {
+			$order = $this->request->get['order'];
+		} else {
+			$order = 'ASC';
+		}
+
+		if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+		$url = '';
+
+		if (isset($this->request->get['sort'])) {
+			$url .= '&sort=' . $this->request->get['sort'];
+		}
+
+		if (isset($this->request->get['order'])) {
+			$url .= '&order=' . $this->request->get['order'];
+		}
+
+		if (isset($this->request->get['page'])) {
+			$url .= '&page=' . $this->request->get['page'];
+		}
+
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/home')
@@ -241,6 +295,44 @@ die;
 		$data['button_delete'] = $this->language->get('button_delete');
 		$data['button_back'] = $this->language->get('button_back');
 
+
+
+        $data['projects'] = array();
+
+        $project_total = $this->model_account_project->getTotalProjects();
+
+		$results = $this->model_account_project->getProjects(($page - 1) * 10, 10);
+
+        //dump($results);
+		foreach ($results as $result) {
+
+            $data['projects'][] = array(
+				'project_id'   => $result['project_id'],
+				'name'       => $result['name'],
+                'project_type'       => $result['project_type'],
+                'project_source'       => $result['project_source'],
+                'project_remark'       => $result['project_remark'],
+				'project_status'     => $result['project_status'],
+				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'project_amount'      => $this->currency->format($result['project_amount']),
+				'href'       => $this->url->link('account/project/edit', 'project_id=' . $result['project_id'], 'SSL'),
+			);
+
+        }
+
+        dump($data['projects']); die;
+
+        $pagination = new Pagination();
+		$pagination->total = $project_total;
+		$pagination->page = $page;
+		$pagination->limit = 10;
+		$pagination->url = $this->url->link('account/project', 'page={page}', 'SSL');
+
+		$data['pagination'] = $pagination->render();
+
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($project_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($project_total - 10)) ? $project_total : ((($page - 1) * 10) + 10), $project_total, ceil($project_total / 10));
+
+
         if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
@@ -254,16 +346,6 @@ die;
 		} else {
 			$data['success'] = '';
 		}
-
-        $data['projects'] = array();
-
-
-        $results = $this->model_account_project->getProjects();
-        //dump($results);
-		foreach ($results as $result) {
-
-
-        }
 
         $data['add'] = $this->url->link('account/project/add', '', 'SSL');
 		$data['back'] = $this->url->link('account/project', '', 'SSL');
