@@ -23,7 +23,34 @@
     </div>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
         <?php if ($projects) { ?>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
 
+                    <td class="text-left"><?php echo $column_project_name; ?></td>
+                    <td class="text-left"><?php echo $column_project_type; ?></td>
+                    <td class="text-left"><?php echo $column_project_source; ?></td>
+                    <td class="text-right"><?php echo $column_project_amount; ?></td>
+                    <td class="text-right"><?php echo $column_date_added; ?></td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($projects as $project) { ?>
+                  <tr>
+                    <td class="text-left"><?php echo $project['name']; ?></td>
+                    <td class="text-left"><?php echo $project['project_type']; ?></td>
+                    <td class="text-left"><?php echo $project['project_source']; ?></td>
+                    <td class="text-right price-tx"><?php echo $project['project_amount']; ?></td>
+                    <td class="text-right"><?php echo $project['date_added']; ?></td>
+                    <td class="text-right"><a href="<?php echo $project['href']; ?>" class="btn btn-info"><?php echo $button_edit; ?></td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-right"><?php echo $pagination; ?></div>
         <?php } else { ?>
         <p><?php echo $text_empty; ?></p>
         <?php } ?>

@@ -60,6 +60,46 @@ class ControllerAccountProject extends Controller {
 
     }
 
+    public function edit() {
+		if (!$this->customer->isLogged()) {
+			$this->session->data['redirect'] = $this->url->link('account/project', '', 'SSL');
+
+			$this->response->redirect($this->url->link('account/login', '', 'SSL'));
+		}
+
+		$this->load->language('account/project');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+
+		$this->load->model('account/project');
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+			$this->model_account_project->editProject($this->request->get['project_id'], $this->request->post);
+ 
+			$this->session->data['success'] = $this->language->get('text_edit');
+
+			// Add to activity log
+			$this->load->model('account/activity');
+
+			$activity_data = array(
+				'customer_id' => $this->customer->getId(),
+				'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
+			);
+
+			$this->model_account_activity->addActivity('project_edit', $activity_data);
+
+			$this->response->redirect($this->url->link('account/project', '', 'SSL'));
+		}
+
+		$this->getForm();
+
+    }
+
+
     protected function getForm() {
         $data['breadcrumbs'] = array();
 
@@ -78,7 +118,7 @@ class ControllerAccountProject extends Controller {
 			'href' => $this->url->link('account/project', '', 'SSL')
 		);
 
-		if (!isset($this->request->get['address_id'])) {
+		if (!isset($this->request->get['project_id'])) {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('text_edit_project'),
 				'href' => $this->url->link('account/project/add', '', 'SSL')
@@ -86,9 +126,11 @@ class ControllerAccountProject extends Controller {
 		} else {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('text_edit_project'),
-				'href' => $this->url->link('account/address/edit', 'address_id=' . $this->request->get['address_id'], 'SSL')
+				'href' => $this->url->link('account/project/edit', 'project_id=' . $this->request->get['project_id'], 'SSL')
 			);
 		}
+
+
 
 		$data['heading_title'] = $this->language->get('heading_title');
         $data['text_project'] = $this->language->get('text_project');
@@ -106,6 +148,28 @@ class ControllerAccountProject extends Controller {
         $this->load->model('localisation/language');
         $data['languages'] = $this->model_localisation_language->getLanguages();
 
+        $project_info = array();
+        if (isset($this->request->get['project_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$project_info = $this->model_account_project->getProject($this->request->get['project_id']);
+		}
+
+        if (isset($this->request->post['project_description'])) {
+			$data['project_description'] = $this->request->post['project_description'];
+		} elseif (isset($this->request->get['project_id'])) {
+			$data['project_description'] = $this->model_account_project->getProjectDescriptions($this->request->get['project_id']);
+		} else {
+			$data['project_description'] = array();
+		}
+
+        if (isset($this->request->post['project_amount'])) {
+			$data['project_amount'] = $this->request->post['project_amount'];
+		} elseif (!empty($project_info)) {
+			$data['project_amount'] = $project_info['project_amount'];
+		} else {
+			$data['project_amount'] = '';
+		}
+
+
 
         if (isset($this->error['project_name'])) {
 			$data['error_project_name'] = $this->error['project_name'];
@@ -113,29 +177,11 @@ class ControllerAccountProject extends Controller {
 			$data['error_project_name'] = '';
 		}
 
-        if (isset($this->request->post['project_name'])) {
-			$data['project_name'] = $this->request->post['project_name'];
-		} elseif (!empty($address_info)) {
-			$data['project_name'] = $address_info['project_name'];
-		} else {
-			$data['project_name'] = '';
-		}
-
-
         if (isset($this->error['project_type'])) {
 			$data['error_project_type'] = $this->error['project_type'];
 		} else {
 			$data['error_project_type'] = '';
 		}
-
-        if (isset($this->request->post['project_type'])) {
-			$data['project_type'] = $this->request->post['project_type'];
-		} elseif (!empty($address_info)) {
-			$data['project_type'] = $address_info['project_type'];
-		} else {
-			$data['project_type'] = '';
-		}
-
 
         if (isset($this->error['project_source'])) {
 			$data['error_project_source'] = $this->error['project_source'];
@@ -143,28 +189,13 @@ class ControllerAccountProject extends Controller {
 			$data['error_project_source'] = '';
 		}
 
-        if (isset($this->request->post['project_source'])) {
-			$data['project_source'] = $this->request->post['project_source'];
-		} elseif (!empty($address_info)) {
-			$data['project_source'] = $address_info['project_source'];
-		} else {
-			$data['project_source'] = '';
-		}
-
-
         if (isset($this->error['project_amount'])) {
 			$data['error_project_amount'] = $this->error['project_amount'];
 		} else {
 			$data['error_project_amount'] = '';
 		}
 
-        if (isset($this->request->post['project_amount'])) {
-			$data['project_amount'] = $this->request->post['project_amount'];
-		} elseif (!empty($address_info)) {
-			$data['project_amount'] = $address_info['project_amount'];
-		} else {
-			$data['project_amount'] = '';
-		}
+
 
 
         if (!isset($this->request->get['project_id'])) {
@@ -195,44 +226,28 @@ class ControllerAccountProject extends Controller {
     protected function validateForm() {
 
         foreach ($this->request->post['project_description'] as $language_id => $value) {
-			if ((utf8_strlen($value['name']) < 2) || (utf8_strlen($value['name']) > 255)) {
+			if ((utf8_strlen($value['name']) < 1) || (utf8_strlen($value['name']) > 255)) {
 				$this->error['project_name'][$language_id] = $this->language->get('error_project_name');
 			}
 
-			if ((utf8_strlen($value['project_type']) < 3) || (utf8_strlen($value['project_type']) > 255)) {
+			if ((utf8_strlen($value['project_type']) < 1) || (utf8_strlen($value['project_type']) > 255)) {
 				$this->error['project_type'][$language_id] = $this->language->get('error_project_type');
 			}
 
-            if ((utf8_strlen($value['project_source']) < 3) || (utf8_strlen($value['project_source']) > 255)) {
+            if ((utf8_strlen($value['project_source']) < 1) || (utf8_strlen($value['project_source']) > 255)) {
 				$this->error['project_source'][$language_id] = $this->language->get('error_project_source');
 			}
 		}
 
-        if( empty($value['project_amount']) || ($value['project_amount'] <= 0 ) ) {
+
+
+        if( empty($this->request->post['project_amount']) || ($this->request->post['project_amount'] <= 0 ) ) {
             $this->error['project_amount'] = $this->language->get('error_project_amount');
         }
 
         return !$this->error;
     }
 
-    public function edit() {
-		if (!$this->customer->isLogged()) {
-			$this->session->data['redirect'] = $this->url->link('account/project', '', 'SSL');
-
-			$this->response->redirect($this->url->link('account/login', '', 'SSL'));
-		}
-
-		$this->load->language('account/project');
-
-		$this->document->setTitle($this->language->get('heading_title'));
-
-		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
-		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
-		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
-
-		$this->load->model('account/address');
-
-    }
 
     protected function getList() {
 
@@ -296,6 +311,12 @@ class ControllerAccountProject extends Controller {
 		$data['button_back'] = $this->language->get('button_back');
 
 
+        $data['column_project_id'] =  $this->language->get('column_project_id');
+        $data['column_project_name'] =  $this->language->get('column_project_name');
+        $data['column_project_type'] =  $this->language->get('column_project_type');
+        $data['column_project_source'] =  $this->language->get('column_project_source');
+        $data['column_project_amount'] =  $this->language->get('column_project_amount');
+        $data['column_date_added'] =  $this->language->get('column_date_added');
 
         $data['projects'] = array();
 
@@ -320,7 +341,7 @@ class ControllerAccountProject extends Controller {
 
         }
 
-        dump($data['projects']); die;
+
 
         $pagination = new Pagination();
 		$pagination->total = $project_total;

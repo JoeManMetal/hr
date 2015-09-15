@@ -14,6 +14,13 @@ $_['entry_project_source']      = 'Project Source/Referral';
 $_['entry_project_remark']      = 'Remarks';
 $_['entry_project_amount']      = 'Contract Amount';
 
+$_['column_project_id']       = 'Project ID';
+$_['column_project_name']        = 'Project Name';
+$_['column_project_type']       = 'Project Type';
+$_['column_project_source']           = 'Project Source/Referral';
+$_['column_project_amount']          = 'Contract Amount';
+$_['column_date_added']     = 'Date Added';
+
 $_['text_empty']           = 'You have no projects in your account.';
 
 $_['error_delete']         = 'Warning: You must have at least one address!';
