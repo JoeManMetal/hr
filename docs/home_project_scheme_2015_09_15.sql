@@ -12,6 +12,16 @@ CREATE TABLE IF NOT EXISTS `oc_project` (
   PRIMARY KEY (`project_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
+CREATE TABLE IF NOT EXISTS `oc_project_workload` (
+  `project_workload_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `project_workload` decimal(15,4) NOT NULL,
+  `project_remark` text NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`project_workload_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 -- --------------------------------------------------------
 
 --
