@@ -79,7 +79,7 @@ class ControllerAccountProject extends Controller {
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_account_project->editProject($this->request->get['project_id'], $this->request->post);
- 
+
 			$this->session->data['success'] = $this->language->get('text_edit');
 
 			// Add to activity log
