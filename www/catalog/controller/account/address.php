@@ -13,6 +13,8 @@ class ControllerAccountAddress extends Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		$this->document->addStyle('catalog/view/theme/theme574/stylesheet/calendar.css');
+
 		$this->load->model('account/address');
 
 		$this->getList();
