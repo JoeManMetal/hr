@@ -626,6 +626,14 @@
                 <button type="button" id="button-transaction" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_transaction_add; ?></button>
               </div>
             </div>
+
+
+
+
+
+
+
+
             <div class="tab-pane" id="tab-reward">
               <div id="reward"></div>
               <br />
@@ -641,10 +649,43 @@
                   <input type="text" name="points" value="" placeholder="<?php echo $entry_points; ?>" id="input-points" class="form-control" />
                 </div>
               </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-points"><?php echo $entry_date_leave; ?></label>
+                <div class="col-sm-6 date">
+                    <input type="text" name="date_leave" value="<?php echo $date_leave; ?>" placeholder="<?php echo $entry_date_leave; ?>" data-date-format="YYYY-MM-DD" id="input-date-leave" class="form-control" />
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+              </div>
+
+
+
+
               <div class="text-right">
                 <button type="button" id="button-reward" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_reward_add; ?></button>
               </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <?php } ?>
             <div class="tab-pane" id="tab-ip">
               <div id="ip"></div>

@@ -707,6 +707,9 @@ class ControllerSaleCustomer extends Controller {
 		$data['entry_amount'] = $this->language->get('entry_amount');
 		$data['entry_points'] = $this->language->get('entry_points');
 
+		$data['entry_date_leave'] = 'Annual Leave'; //$this->language->get('entry_date_leave');
+
+
 		$data['help_safe'] = $this->language->get('help_safe');
 		$data['help_points'] = $this->language->get('help_points');
 
@@ -727,6 +730,9 @@ class ControllerSaleCustomer extends Controller {
 		$data['tab_ip'] = $this->language->get('tab_ip');
 
 		$data['token'] = $this->session->data['token'];
+
+
+		$data['date_leave'] = '';
 
 		if (isset($this->request->get['customer_id'])) {
 			$data['customer_id'] = $this->request->get['customer_id'];
