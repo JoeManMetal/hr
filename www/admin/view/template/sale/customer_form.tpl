@@ -607,6 +607,11 @@
                 <button id="button-history" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_history_add; ?></button>
               </div>
             </div>
+
+
+
+
+
             <div class="tab-pane" id="tab-transaction">
               <div id="transaction"></div>
               <br />
@@ -637,35 +642,59 @@
             <div class="tab-pane" id="tab-reward">
               <div id="reward"></div>
               <br />
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-reward-description"><?php echo $entry_description; ?></label>
-                <div class="col-sm-10">
-                  <input type="text" name="description" value="" placeholder="<?php echo $entry_description; ?>" id="input-reward-description" class="form-control" />
-                </div>
-              </div>
-              <div class="form-group">
+
+              <div class="form-group" style="display: none;">
                 <label class="col-sm-2 control-label" for="input-points"><span data-toggle="tooltip" title="<?php echo $help_points; ?>"><?php echo $entry_points; ?></span></label>
                 <div class="col-sm-10">
                   <input type="text" name="points" value="" placeholder="<?php echo $entry_points; ?>" id="input-points" class="form-control" />
                 </div>
               </div>
 
+
+
+
+
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-points"><?php echo $entry_date_leave; ?></label>
-                <div class="col-sm-6 date">
+                <div class="col-sm-4">
+                <div class="input-group date">
                     <input type="text" name="date_leave" value="<?php echo $date_leave; ?>" placeholder="<?php echo $entry_date_leave; ?>" data-date-format="YYYY-MM-DD" id="input-date-leave" class="form-control" />
                     <span class="input-group-btn">
                     <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                    </span>
+                </span></div>
                 </div>
               </div>
-
-
-
-
-              <div class="text-right">
+              <div class="form-group">
+                  <label class="col-sm-2 control-label"><?php echo $entry_fullday; ?></label>
+                  <div class="col-sm-4">
+                    <label class="radio-inline">
+                      <input type="radio" name="fullday" value="1" checked="checked" />
+                      <?php echo $text_fullday; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="fullday" value="2" />
+                      <?php echo $text_am; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="fullday" value="3" />
+                      <?php echo $text_pm; ?>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-reward-description"><?php echo $entry_description; ?></label>
+                  <div class="col-sm-8">
+                    <input type="text" name="description" value="" placeholder="<?php echo $entry_description; ?>" id="input-reward-description" class="form-control" />
+                  </div>
+                </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="">&nbsp;</label>
+                <div class="col-sm-8 text-right">
                 <button type="button" id="button-reward" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_reward_add; ?></button>
               </div>
+              </div>
+
+
             </div>
 
 

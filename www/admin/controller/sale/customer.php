@@ -682,6 +682,12 @@ class ControllerSaleCustomer extends Controller {
 		$data['text_add_ban_ip'] = $this->language->get('text_add_ban_ip');
 		$data['text_remove_ban_ip'] = $this->language->get('text_remove_ban_ip');
 
+		$data['text_fullday'] = 'FULL';//$this->language->get('text_fullday');
+		$data['text_am'] = "AM"; //$this->language->get('text_am');
+		$data['text_pm'] = "PM"; //$this->language->get('text_pm');
+		$data['entry_fullday'] = "Day"; //$this->language->get('entry_fullday');
+
+
 		$data['entry_customer_group'] = $this->language->get('entry_customer_group');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
@@ -718,7 +724,7 @@ class ControllerSaleCustomer extends Controller {
 		$data['button_address_add'] = $this->language->get('button_address_add');
 		$data['button_history_add'] = $this->language->get('button_history_add');
 		$data['button_transaction_add'] = $this->language->get('button_transaction_add');
-		$data['button_reward_add'] = $this->language->get('button_reward_add');
+		$data['button_reward_add'] = 'Add Leave Record'; //$this->language->get('button_reward_add');
 		$data['button_remove'] = $this->language->get('button_remove');
 		$data['button_upload'] = $this->language->get('button_upload');
 
@@ -726,7 +732,7 @@ class ControllerSaleCustomer extends Controller {
 		$data['tab_address'] = $this->language->get('tab_address');
 		$data['tab_history'] = $this->language->get('tab_history');
 		$data['tab_transaction'] = $this->language->get('tab_transaction');
-		$data['tab_reward'] = $this->language->get('tab_reward');
+		$data['tab_reward'] = 'Leave Record'; $this->language->get('tab_reward');
 		$data['tab_ip'] = $this->language->get('tab_ip');
 
 		$data['token'] = $this->session->data['token'];

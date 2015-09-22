@@ -12,9 +12,9 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-        <td class="text-left"><?php echo $column_date_added; ?></td>
+        <td class="text-left">Leave<?php //echo $column_date_added; ?></td>
         <td class="text-left"><?php echo $column_description; ?></td>
-        <td class="text-right"><?php echo $column_points; ?></td>
+        <td class="text-right">Day<?php //echo $column_points; ?></td>
       </tr>
     </thead>
     <tbody>
