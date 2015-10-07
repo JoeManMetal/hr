@@ -423,6 +423,38 @@ class ModelSaleCustomer extends Model {
 		return $query->row['total'];
 	}
 
+	public function addLeaveRecord($customer_id, $description = '', $date_leave='', $fullday = '' , $order_id = 0) {
+		$customer_info = $this->getCustomer($customer_id);
+
+		if ($customer_info) {
+			$this->db->query("INSERT INTO " . DB_PREFIX . "customer_leave_record SET customer_id = '" . (int)$customer_id . "',  fullday = '" . (int)$fullday . "', date_leave = '" . $this->db->escape($date_leave) . "', description = '" . $this->db->escape($description) . "', date_added = NOW()");
+
+		}
+	}
+
+	public function deleteLeaveRecord($customer_id, $customer_leave_record_id) {
+		$this->db->query("DELETE FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "' AND customer_leave_record_id = '".(int)$customer_leave_record_id."'");
+	}
+
+	public function getLeaveRecords($customer_id, $start = 0, $limit = 10) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "' ORDER BY date_leave DESC LIMIT " . (int)$start . "," . (int)$limit);
+
+		return $query->rows;
+	}
+
+	public function getTotalLeaveRecords($customer_id) {
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
+
+		return $query->row['total'];
+	}
+
+	public function getLeaveRecordTotal($customer_id) {
+		$query = $this->db->query("SELECT SUM(fullday) AS total FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
+
+		return $query->row['total'];
+	}
+
+
 	public function addReward($customer_id, $description = '', $points = '', $order_id = 0) {
 		$customer_info = $this->getCustomer($customer_id);
 
@@ -513,14 +545,14 @@ class ModelSaleCustomer extends Model {
 
 		return $query->row['total'];
 	}
-	
+
 	public function getTotalLoginAttempts($email) {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_login` WHERE `email` = '" . $this->db->escape($email) . "'");
 
 		return $query->row;
-	}	
+	}
 
 	public function deleteLoginAttempts($email) {
 		$this->db->query("DELETE FROM `" . DB_PREFIX . "customer_login` WHERE `email` = '" . $this->db->escape($email) . "'");
-	}		
+	}
 }

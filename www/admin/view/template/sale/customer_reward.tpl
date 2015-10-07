@@ -18,19 +18,15 @@
       </tr>
     </thead>
     <tbody>
-      <?php if ($rewards) { ?>
-      <?php foreach ($rewards as $reward) { ?>
+      <?php if ($leave_records) { ?>
+      <?php foreach ($leave_records as $leave_record) { ?>
       <tr>
-        <td class="text-left"><?php echo $reward['date_added']; ?></td>
-        <td class="text-left"><?php echo $reward['description']; ?></td>
-        <td class="text-right"><?php echo $reward['points']; ?></td>
+        <td class="text-left"><?php echo $leave_record['date_leave']; ?></td>
+        <td class="text-left"><?php echo $leave_record['description']; ?></td>
+        <td class="text-right"><?php echo $leave_record['fullday']; ?></td>
       </tr>
       <?php } ?>
-      <tr>
-        <td></td>
-        <td class="text-right"><b><?php echo $text_balance; ?></b></td>
-        <td class="text-right"><?php echo $balance; ?></td>
-      </tr>
+      
       <?php } else { ?>
       <tr>
         <td class="text-center" colspan="3"><?php echo $text_no_results; ?></td>

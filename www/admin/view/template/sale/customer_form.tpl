@@ -1078,7 +1078,7 @@ $('#button-reward').on('click', function(e) {
 		url: 'index.php?route=sale/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
 		type: 'post',
 		dataType: 'html',
-		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&points=' + encodeURIComponent($('#tab-reward input[name=\'points\']').val()),
+		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&fullday=' + encodeURIComponent($('#tab-reward input[name=\'fullday\']').val()) + '&date_leave=' + encodeURIComponent($('#tab-reward input[name=\'date_leave\']').val()),
 		beforeSend: function() {
 			$('#button-reward').button('loading');
 		},
@@ -1090,7 +1090,8 @@ $('#button-reward').on('click', function(e) {
 
 			$('#reward').html(html);
 
-			$('#tab-reward input[name=\'points\']').val('');
+            $('#tab-reward input[name=\'date_leave\']').val('');
+			$('#tab-reward input[name=\'fullday\']').val('');
 			$('#tab-reward input[name=\'description\']').val('');
 		}
 	});
