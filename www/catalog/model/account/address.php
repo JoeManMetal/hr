@@ -150,4 +150,10 @@ class ModelAccountAddress extends Model {
 
 		return $query->row['total'];
 	}
+
+	public function getLeaveRecords() {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+
+		return $query->rows;
+	}
 }

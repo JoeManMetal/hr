@@ -303,7 +303,11 @@ class ControllerAccountAddress extends Controller {
 			$data['total_al_left_as_at_today'] = $data['total_al_as_at_today'] - $total_taken;
 			$data['total_taken'] = $total_taken;
 
-			$annual_leave = array('2-3-2015', '4-4-2015');
+			$annual_leave_results = $this->model_account_address->getLeaveRecords();
+
+
+			$annual_leave = array_map(function ($arrray) { return date('j-n-Y', strtotime($arrray['date_leave'])); }, $annual_leave_results);
+
 			$data['annual_calendar'] = $this->draw_annual_calendar( $annual_leave );
 
 			$data['addresses'][] = array(
