@@ -1350,10 +1350,14 @@ class ControllerSaleCustomer extends Controller {
 
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_balance'] = $this->language->get('text_balance');
+		$data['text_delete'] = $this->language->get('button_delete');
+		$data['text_loading'] = $this->language->get('text_loading');
 
 		$data['column_date_added'] = $this->language->get('column_date_added');
 		$data['column_description'] = $this->language->get('column_description');
 		$data['column_points'] = $this->language->get('column_points');
+		$data['column_action'] = $this->language->get('column_action');
+
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -1380,8 +1384,9 @@ class ControllerSaleCustomer extends Controller {
 
 		foreach ($results as $result) {
 			$data['leave_records'][] = array(
+				'customer_leave_record_id'  => $result['customer_leave_record_id'],
 				'date_leave'      => date('d-m-Y', strtotime($result['date_leave'])),
-				'fullday'      => $result['fullday'],
+				'fullday'      => ($result['fullday'] == 1 ? 'Full' : ($result['fullday'] == 2 ? 'AM' : 'PM' )),
 				'description' => $result['description'],
 				'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added']))
 			);
@@ -1405,6 +1410,27 @@ class ControllerSaleCustomer extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($leave_record_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($leave_record_total - 10)) ? $leave_record_total : ((($page - 1) * 10) + 10), $leave_record_total, ceil($leave_record_total / 10));
 
 		$this->response->setOutput($this->load->view('sale/customer_reward.tpl', $data));
+	}
+
+	public function deleteLeaveRecord() {
+		$this->load->language('sale/customer');
+
+		$json = array();
+
+		if (isset($this->request->post['customer_id']) && isset($this->request->post['customer_leave_record_id'])) {
+			if (!$this->user->hasPermission('modify', 'sale/customer')) {
+				$json['error'] = $this->language->get('error_permission');
+			} else {
+				$this->load->model('sale/customer');
+
+				$this->model_sale_customer->deleteLeaveRecord($this->request->post['customer_id'], $this->request->post['customer_leave_record_id']);
+
+				$json['success'] = $this->language->get('text_success');
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 
 	public function ip() {

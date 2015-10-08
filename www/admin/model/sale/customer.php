@@ -433,6 +433,7 @@ class ModelSaleCustomer extends Model {
 	}
 
 	public function deleteLeaveRecord($customer_id, $customer_leave_record_id) {
+		
 		$this->db->query("DELETE FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "' AND customer_leave_record_id = '".(int)$customer_leave_record_id."'");
 	}
 

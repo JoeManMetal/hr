@@ -1078,7 +1078,7 @@ $('#button-reward').on('click', function(e) {
 		url: 'index.php?route=sale/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
 		type: 'post',
 		dataType: 'html',
-		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&fullday=' + encodeURIComponent($('#tab-reward input[name=\'fullday\']').val()) + '&date_leave=' + encodeURIComponent($('#tab-reward input[name=\'date_leave\']').val()),
+		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&fullday=' + encodeURIComponent($('#tab-reward input[name=\'fullday\']:checked').val()) + '&date_leave=' + encodeURIComponent($('#tab-reward input[name=\'date_leave\']').val()),
 		beforeSend: function() {
 			$('#button-reward').button('loading');
 		},
@@ -1096,6 +1096,44 @@ $('#button-reward').on('click', function(e) {
 		}
 	});
 });
+
+
+
+
+$('body').delegate('.button-leave-record-delete', 'click', function() {
+	var element = this;
+    var leave_record_id = encodeURIComponent(this.value);
+	$.ajax({
+		url: 'index.php?route=sale/customer/deleteLeaveRecord&token=<?php echo $token; ?>',
+		type: 'post',
+		dataType: 'json',
+		data: 'customer_id=' + '<?php echo $customer_id; ?>' + '&customer_leave_record_id=' + leave_record_id,
+		beforeSend: function() {
+			$(element).button('loading');
+		},
+		complete: function() {
+			$(element).button('reset');
+		},
+		success: function(json) {
+			$('.alert').remove();
+
+			if (json['error']) {
+				 $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+			}
+
+			if (json['success']) {
+				 $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				//$(element).replaceWith('<button type="button" value="' + element.value + '" class="btn btn-success btn-xs button-leave-record-delete"><i class="fa fa-plus-circle"></i> <?php echo $text_delete; ?></button>');
+
+                $('#leave_record_' + leave_record_id).remove()
+			}
+		}
+	});
+});
+
+
+
 
 $('#ip').delegate('.pagination a', 'click', function(e) {
 	e.preventDefault();
