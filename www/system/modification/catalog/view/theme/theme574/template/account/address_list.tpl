@@ -21,6 +21,8 @@
     <?php } ?>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
         <h2><?php //echo $text_address_book; ?></h2>
+        
+        
         <?php if ($addresses) { ?>
           <?php foreach ($addresses as $result) { ?>
             <table class="table table-bordered table-hover">
@@ -82,6 +84,12 @@
                 <?php echo $annual_calendar; ?>
             </div>
         </div>
+        
+        
+        
+        
+        
+        
       <?php } else { ?>
       <p><?php echo $text_empty; ?></p>
       <?php } ?>

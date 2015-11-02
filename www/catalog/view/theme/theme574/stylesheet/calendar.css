@@ -63,6 +63,28 @@ table {
     color: #f9f9f9;
 }
 
+.calendar td.current-day-am {
+    background: #c03900;
+    color: #f9f9f9;
+    height: auto;
+    width: 14.28%;
+     border-radius: 90px 90px 0 0 !important;
+     -moz-border-radius: 90px 90px 0 0 !important;
+     -webkit-border-radius: 90px 90px 0 0 !important;
+     
+}
+
+.calendar td.current-day-pm {
+    background: #c03900;
+    color: #f9f9f9;
+    height: auto;
+    width: 14.28%;
+     border-radius: 0 0 90px 90px !important;
+     -moz-border-radius: 0 0 90px 90px !important;
+     -webkit-border-radius: 0 0 90px 90px !important;
+     
+}
+
 .event {
     cursor: pointer;
     position: relative;

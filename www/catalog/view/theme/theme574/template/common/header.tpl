@@ -130,30 +130,92 @@
 		</div>
 
 	</div>
-
-
-	<?php if ($categories) { ?>
-	<div class="container">
-		<div id="menu-gadget" class="menu-gadget">
-			<div id="menu-icon" class="menu-icon"><?php echo $text_category; ?></div>
-			<?php if ($categories_tm) {  echo $categories_tm; } ?>
-		</div>
+	
+	
+	
+<?php if($top_admin) { ?>	
+	
+<div class="container">
+	<div id="menu-gadget" class="menu-gadget">
+	<div id="menu-icon" class="menu-icon">STAFF</div>
+	<ul class="menu">
+	<li>
+		<a href="javascript:;" >PP Team</a>	
+		<ul>
+			<li>
+				<a href="index.php?route=account/address&staff_id=6">Cody Lui</a>
+			<li>
+				<a href="index.php?route=account/address&staff_id=7">Daniel Fong</a>
+			</li>
+			<li>
+				<a href="index.php?route=account/address&staff_id=5">Dante Cheung</a>
+			</li>
+				<li>
+				<a href="index.php?route=account/address&staff_id=4">Heidi Cheuk</a>
+			</li>
+				<li>
+				<a href="index.php?route=account/address&staff_id=3">Joe Man</a>
+			</li>
+				<li>
+				<a href="index.php?route=account/address&staff_id=8">Livia Kwong</a>
+			</li>
+				<li>
+				<a href="index.php?route=account/address&staff_id=9">Xavier Fung</a>
+			</li>
+		</ul>
+	</li>
+	</ul>
 	</div>
+</div>
+	
+	
+<div id="tm_menu" class="nav__primary">
+<div class="container">
+<ul class="menu">
+<li>
+<a href="javascript:;" >Staff</a>
+<ul>
+    <li>
+        PP Team
+        <ul>
+            <li>
+            	<a href="index.php?route=account/address&staff_id=6">Cody Lui</a>
+            <li>
+            	<a href="index.php?route=account/address&staff_id=7">Daniel Fong</a>
+            </li>
+            <li>
+            	<a href="index.php?route=account/address&staff_id=5">Dante Cheung</a>
+            </li>
+			 <li>
+            	<a href="index.php?route=account/address&staff_id=4">Heidi Cheuk</a>
+            </li>
+			 <li>
+            	<a href="index.php?route=account/address&staff_id=3">Joe Man</a>
+            </li>
+			 <li>
+            	<a href="index.php?route=account/address&staff_id=8">Livia Kwong</a>
+            </li>
+			 <li>
+            	<a href="index.php?route=account/address&staff_id=9">Xavier Fung</a>
+            </li>
+			 
+        </ul>
+    </li>
+</ul>
+</li>
+</ul>
+<div class="clear"></div>
+</div>
+</div>
 
-	<script type="text/javascript">
+
+<script type="text/javascript">
 		jQuery(window).load(function () {
 		if ($('body').width() > 767) {
 			$('#tm_menu').TMStickUp({})
 
 		}});
-	</script>
+</script>
 
-	<div id="tm_menu" class="nav__primary">
-		<div class="container">
-			<?php if ($categories_tm) {  echo $categories_tm; } ?>
-			<div class="clear"></div>
-		</div>
-	</div>
-	<?php } ?>
-
+<?php } ?>
 </header>

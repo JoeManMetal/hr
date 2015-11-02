@@ -1087,11 +1087,9 @@ $('#button-reward').on('click', function(e) {
 		},
 		success: function(html) {
 			$('.alert').remove();
-
 			$('#reward').html(html);
-
-            $('#tab-reward input[name=\'date_leave\']').val('');
-			$('#tab-reward input[name=\'fullday\']').val('');
+      $('#tab-reward input[name=\'date_leave\']').val('');
+			$('#tab-reward input[name=\'fullday\']').filter('[value=1]').prop("checked", true);      
 			$('#tab-reward input[name=\'description\']').val('');
 		}
 	});

@@ -78,6 +78,8 @@ class ControllerCommonHeader extends Controller {
 				}
 			}
 		}
+		
+		
 
 		// Menu
 		$this->load->model('catalog/category');

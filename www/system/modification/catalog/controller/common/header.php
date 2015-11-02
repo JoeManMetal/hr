@@ -132,6 +132,11 @@ class ControllerCommonHeader extends Controller {
 			}
 		}
 
+		$data['top_admin'] = false;
+		if( $this->config->get('config_customer_group_id') == 2 ){			
+			$data['top_admin'] = true;	
+		}
+		
 		// Menu
 		$this->load->model('catalog/category');
 

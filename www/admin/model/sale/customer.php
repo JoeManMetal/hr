@@ -449,8 +449,9 @@ class ModelSaleCustomer extends Model {
 		return $query->row['total'];
 	}
 
+//SELECT sum(case when fullday = 1 then 1 else 0.5 end) as fullday FROM `oc_customer_leave_record` WHERE customer_id = 3
 	public function getLeaveRecordTotal($customer_id) {
-		$query = $this->db->query("SELECT SUM(fullday) AS total FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
+		$query = $this->db->query("SELECT SUM(case when fullday = 1 then 1 else 0.5 end) AS total FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
 
 		return $query->row['total'];
 	}

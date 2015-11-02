@@ -90,10 +90,13 @@ class ModelAccountAddress extends Model {
 		}
 	}
 
-	public function getAddresses() {
+	public function getAddresses($customer_id = 0) {
 		$address_data = array();
 
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+		if($customer_id == 0)
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+		else
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$customer_id . "'");
 
 		foreach ($query->rows as $result) {
 			$country_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "country` WHERE country_id = '" . (int)$result['country_id'] . "'");
@@ -151,9 +154,15 @@ class ModelAccountAddress extends Model {
 		return $query->row['total'];
 	}
 
-	public function getLeaveRecords() {
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+	public function getLeaveRecords($customer_id) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
 
 		return $query->rows;
+	}
+	
+	public function getLeaveRecordTotal($customer_id) {
+		$query = $this->db->query("SELECT SUM(case when fullday = 1 then 1 else 0.5 end) AS total FROM " . DB_PREFIX . "customer_leave_record WHERE customer_id = '" . (int)$customer_id . "'");
+
+		return $query->row['total'];
 	}
 }

@@ -219,8 +219,26 @@ class ControllerAccountAddress extends Controller {
 		$data['custom_fields'] = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
 
 		$current_year = date('Y');
+		
+		$data['top_admin'] = false;
+		$staff_id = $this->customer->getId();
+		if( $this->config->get('config_customer_group_id') == 2 ){
+			
+			$data['top_admin'] = true;	
+			if (isset($this->request->get['staff_id'])) {
+				$staff_id = $this->request->get['staff_id'];
+				
+				$data['breadcrumbs'][] = array(
+					'text' => 'Heidi', 
+					'href' => $this->url->link('account/address', 'staff_id=' . $staff_id, 'SSL')
+				);
+		
+			}
+		}
+		
+		
 
-		$results = $this->model_account_address->getAddresses();
+		$results = $this->model_account_address->getAddresses($staff_id);
 		foreach ($results as $result) {
 
 			if ($result['address_format']) {
@@ -256,6 +274,8 @@ class ControllerAccountAddress extends Controller {
 			);
 
 
+			$this->load->model('account/customer');
+			
 			ksort($result['custom_field']);
 
 			$leave_record = array();
@@ -281,18 +301,20 @@ class ControllerAccountAddress extends Controller {
 						);
 						$total_al += (float)$custom_field;
 					} else {
-						$leave_record[] = array(
-							'name' => $custom_field_array[0]['name'],
-							'value' => $custom_field
-						);
+						// $leave_record[] = array(
+						// 	'name' => $custom_field_array[0]['name'],
+						// 	'value' => $custom_field
+						// );
 
-						$total_taken += (float)$custom_field;
+						// $total_taken += (float)$custom_field;
 					}
 				}
 			}
+			
+			
 
 			$data['total_al'] = $total_al;
-
+			$total_taken = $this->model_account_address->getLeaveRecordTotal($staff_id);
 			$datetime1 = new DateTime($current_year.'-01-01');
 			$datetime2 = new DateTime(date('Y-m-d'));
 			$interval = $datetime1->diff($datetime2);
@@ -303,12 +325,21 @@ class ControllerAccountAddress extends Controller {
 			$data['total_al_left_as_at_today'] = $data['total_al_as_at_today'] - $total_taken;
 			$data['total_taken'] = $total_taken;
 
-			$annual_leave_results = $this->model_account_address->getLeaveRecords();
+			$annual_leave_results = $this->model_account_address->getLeaveRecords($staff_id);
+			
 
+			$annual_leave = array_map(function ($arrray) { return array("date"=>date('j-n-Y', strtotime($arrray['date_leave'])), "type"=>$arrray['fullday']); }, $annual_leave_results);
+			
+			//var_dump($annual_leave); die;
+			
+			$annual_leave_type = array();
+			foreach($annual_leave as $key=>$val){
+				$annual_leave_type[$val['date']] = $val['type'];
+			}
+			
+			
 
-			$annual_leave = array_map(function ($arrray) { return date('j-n-Y', strtotime($arrray['date_leave'])); }, $annual_leave_results);
-
-			$data['annual_calendar'] = $this->draw_annual_calendar( $annual_leave );
+			$data['annual_calendar'] = $this->draw_annual_calendar( $annual_leave_type );
 
 			$data['addresses'][] = array(
 				'address_id' => $result['address_id'],
@@ -626,7 +657,7 @@ class ControllerAccountAddress extends Controller {
 		return !$this->error;
 	}
 
-	private function draw_annual_calendar( $annual_leave = array() ) {
+	private function draw_annual_calendar( $annual_leave_type = array() ) {
 		$s = '';
 		for($m = 0; $m < 3; $m++) {
 		    for($d = 1 + ($m * 4); $d < 5 + ($m * 4); $d++) {
@@ -635,7 +666,7 @@ class ControllerAccountAddress extends Controller {
 				$s .= '<header>';
 				$s .= '<h2 class="month">' . date('M', strtotime(date('Y').'-'.$d.'-1')) . '</h2>';
 				$s .= '</header>';
-				$s .=  $this->draw_calendar($d, date('Y'), $annual_leave);
+				$s .=  $this->draw_calendar($d, date('Y'), $annual_leave_type);
 				$s .= '</div></div>';
 				if(($d % 2) == 0) {
 					$s .= '<div class="clearfix hidden-lg"></div>';
@@ -650,7 +681,7 @@ class ControllerAccountAddress extends Controller {
 
 	}
 
-	private function draw_calendar($month,$year,$annual_leave = array()){
+	private function draw_calendar($month,$year,$annual_leave_type = array()){
 
 		/* draw table */
 		$calendar = '<table>';
@@ -679,15 +710,23 @@ class ControllerAccountAddress extends Controller {
 		/* keep going with days.... */
 		for($list_day = 1; $list_day <= $days_in_month; $list_day++) {
 
-			if(in_array( $list_day.'-'.$month.'-'.$year,$annual_leave))
-				$calendar.= '<td class="current-day">';
-			else
+			if(array_key_exists( $list_day.'-'.$month.'-'.$year,$annual_leave_type)) {
+				if($annual_leave_type[ $list_day.'-'.$month.'-'.$year ] == 1)
+					$calendar.= '<td class="current-day">';
+				elseif($annual_leave_type[ $list_day.'-'.$month.'-'.$year ] == 2)
+					$calendar.= '<td class="current-day-am">';
+				elseif($annual_leave_type[ $list_day.'-'.$month.'-'.$year ] == 3)
+					$calendar.= '<td class="current-day-pm">';
+				
+			} else
 				$calendar.= '<td>';
-				/* add in the day number */
-				//$calendar.= '<div>'.$list_day.'</div>';
-				$calendar.= $list_day;
-				/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
-				//$calendar.= str_repeat('<p> </p>',2);
+				
+				
+			/* add in the day number */
+			//$calendar.= '<div>'.$list_day.'</div>';
+			$calendar.= $list_day;
+			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
+			//$calendar.= str_repeat('<p> </p>',2);
 
 			$calendar.= '</td>';
 			if($running_day == 6):
