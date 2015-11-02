@@ -222,16 +222,24 @@ class ControllerAccountAddress extends Controller {
 		
 		$data['top_admin'] = false;
 		$staff_id = $this->customer->getId();
+		$data['staff_name'] = $this->customer->getFirstName() . ' ' . $this->customer->getLastName();
+		
 		if( $this->config->get('config_customer_group_id') == 2 ){
 			
 			$data['top_admin'] = true;	
 			if (isset($this->request->get['staff_id'])) {
 				$staff_id = $this->request->get['staff_id'];
 				
-				$data['breadcrumbs'][] = array(
-					'text' => 'Heidi', 
-					'href' => $this->url->link('account/address', 'staff_id=' . $staff_id, 'SSL')
-				);
+				$this->load->model('account/customer');
+				$cutomer_info = $this->model_account_customer->getCustomer($staff_id);
+				if(!empty($cutomer_info)) {
+					$data['staff_name'] = $cutomer_info['firstname'] . ' ' . $cutomer_info['lastname'];
+					
+					$data['breadcrumbs'][] = array(
+						'text' => $cutomer_info['firstname'] . ' ' . $cutomer_info['lastname'], 
+						'href' => $this->url->link('account/address', 'staff_id=' . $staff_id, 'SSL')
+					);
+				}
 		
 			}
 		}

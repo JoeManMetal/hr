@@ -156,10 +156,13 @@
 				<li>
 				<a href="index.php?route=account/address&staff_id=3">Joe Man</a>
 			</li>
-				<li>
+			<li>
 				<a href="index.php?route=account/address&staff_id=8">Livia Kwong</a>
 			</li>
-				<li>
+			<li>
+				<a href="index.php?route=account/address&staff_id=11">Oscar Cheung</a>
+			</li>
+			<li>
 				<a href="index.php?route=account/address&staff_id=9">Xavier Fung</a>
 			</li>
 		</ul>
@@ -195,6 +198,9 @@
 			 <li>
             	<a href="index.php?route=account/address&staff_id=8">Livia Kwong</a>
             </li>
+			<li>
+				<a href="index.php?route=account/address&staff_id=11">Oscar Cheung</a>
+			</li>
 			 <li>
             	<a href="index.php?route=account/address&staff_id=9">Xavier Fung</a>
             </li>
