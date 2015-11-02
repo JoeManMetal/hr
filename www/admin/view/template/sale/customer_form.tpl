@@ -28,10 +28,10 @@
           <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" data-toggle="tab"><?php echo $tab_general; ?></a></li>
             <?php if ($customer_id) { ?>
-            <li><a href="#tab-history" data-toggle="tab"><?php echo $tab_history; ?></a></li>
-            <li><a href="#tab-transaction" data-toggle="tab"><?php echo $tab_transaction; ?></a></li>
+            <!--<li><a href="#tab-history" data-toggle="tab"><?php //echo $tab_history; ?></a></li>
+            <li><a href="#tab-transaction" data-toggle="tab"><?php //echo $tab_transaction; ?></a></li>-->
             <li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
-            <li><a href="#tab-ip" data-toggle="tab"><?php echo $tab_ip; ?></a></li>
+            <!--<li><a href="#tab-ip" data-toggle="tab"><?php //echo $tab_ip; ?></a></li>-->
             <?php } ?>
           </ul>
           <div class="tab-content">
@@ -594,7 +594,7 @@
               </div>
             </div>
             <?php if ($customer_id) { ?>
-            <div class="tab-pane" id="tab-history">
+            <div class="tab-pane" id="tab-history" style="display: none;">
               <div id="history"></div>
               <br />
               <div class="form-group">
@@ -612,7 +612,7 @@
 
 
 
-            <div class="tab-pane" id="tab-transaction">
+            <div class="tab-pane" id="tab-transaction" style="display: none;">
               <div id="transaction"></div>
               <br />
               <div class="form-group">
@@ -655,10 +655,10 @@
 
 
               <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-points"><?php echo $entry_date_leave; ?></label>
+                <label class="col-sm-2 control-label" for="input-points">Leave Date<?php //echo $entry_date_leave; ?></label>
                 <div class="col-sm-4">
                 <div class="input-group date">
-                    <input type="text" name="date_leave" value="<?php echo $date_leave; ?>" placeholder="<?php echo $entry_date_leave; ?>" data-date-format="YYYY-MM-DD" id="input-date-leave" class="form-control" />
+                    <input type="text" name="date_leave" value="<?php echo $date_leave; ?>" placeholder="Leave Date<?php //echo $entry_date_leave; ?>" data-date-format="YYYY-MM-DD" id="input-date-leave" class="form-control" />
                     <span class="input-group-btn">
                     <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                 </span></div>
@@ -681,6 +681,53 @@
                     </label>
                   </div>
                 </div>
+                
+                
+                
+                
+                
+                
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><?php //echo $entry_fullday; ?>Type</label>
+                  <div class="col-sm-8">
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="1" checked="checked" /> Annual
+                      <?php //echo $text_fullday; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="2" /> Sick
+                      <?php //echo $text_am; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="3" /> Birthday
+                      <?php //echo $text_am; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="４" /> Maternity
+                      <?php //echo $text_am; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="５" /> Marriage
+                      <?php //echo $text_pm; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="６" /> Funeral
+                      <?php //echo $text_pm; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="７" /> No Pay
+                      <?php //echo $text_pm; ?>
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="leave_type" value="8" /> Others
+                      <?php //echo $text_pm; ?>
+                    </label>
+                  </div>
+                </div>
+                
+                
+                
+                
                 <div class="form-group">
                   <label class="col-sm-2 control-label" for="input-reward-description"><?php echo $entry_description; ?></label>
                   <div class="col-sm-8">
@@ -716,7 +763,7 @@
 
 
             <?php } ?>
-            <div class="tab-pane" id="tab-ip">
+            <div class="tab-pane" id="tab-ip"  style="display: none;">
               <div id="ip"></div>
             </div>
           </div>
